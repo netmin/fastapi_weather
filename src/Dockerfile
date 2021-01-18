@@ -26,4 +26,4 @@ RUN bash -c "if [ $INSTALL_DEV == 'true' ] ; then poetry install --no-root ; els
 COPY ./app /app
 ENV PYTHONPATH=/app
 
-CMD uvicorn --host=0.0.0.0 app.main:app
+CMD uvicorn --host=0.0.0.0 app.main:app --reload

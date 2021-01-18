@@ -1,16 +1,23 @@
-from typing import Optional
-
 from fastapi import FastAPI
-from starlette.requests import Request
 from starlette.staticfiles import StaticFiles
-from starlette.templating import Jinja2Templates
+
+from .api import weather
+from .views import home
 
 app = FastAPI()
-templates = Jinja2Templates('app/templates')
-app.mount('/static', StaticFiles(directory='./app/static'), name='static')
 
 
-@app.get('/')
-def index(request: Request):
-    return templates.TemplateResponse('home/index.html', {'request': request})
+def configure():
+    configure_routing()
 
+
+def configure_routing():
+    app.mount('/static', StaticFiles(directory='./app/static'), name='static')
+    app.include_router(home.router)
+    app.include_router(weather.router)
+
+
+if __name__ == '__main__':
+    configure()
+else:
+    configure()
