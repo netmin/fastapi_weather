@@ -1,15 +1,16 @@
 from typing import Optional
 
 from fastapi import FastAPI
+from starlette.requests import Request
+from starlette.staticfiles import StaticFiles
+from starlette.templating import Jinja2Templates
 
 app = FastAPI()
+templates = Jinja2Templates('app/templates')
+app.mount('/static', StaticFiles(directory='./app/static'), name='static')
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.get('/')
+def index(request: Request):
+    return templates.TemplateResponse('home/index.html', {'request': request})
 
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
